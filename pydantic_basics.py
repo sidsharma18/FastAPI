@@ -10,7 +10,7 @@ bad_student = {"name": "", "age": "Twenty", "marks": 160, "email": "not-an-email
 # print(bad_student)
 
 
-from pydantic import BaseModel, Field, EmailStr, field_validator
+from pydantic import BaseModel, Field, EmailStr, field_validator, computed_field
 
 """
 Step 2 - BASEMODEL + TYPE HINTS
@@ -65,6 +65,7 @@ s = EmailStudents(name="kabir", email="kabirsingh@gmail.com")
 """
 Step 5 - FINAL STUDENT MODEL
 1. field validator -> our own custom rule.
+2. Computed_field -> a value Pydantic calculates for us.
 """
 
 
@@ -85,6 +86,20 @@ class Student(BaseModel):
             raise ValueError("Name Must Contain Only letters and spaces")
         return value.title()
 
+    @computed_field
+    @property
+    def grade(self) -> str:
+        if self.marks >= 90:
+            return "A+"
+        elif self.marks >= 80:
+            return "A"
+        elif self.marks >= 70:
+            return "B"
+        elif self.marks >= 60:
+            return "C"
+        else:
+            return "Fail"
+
 
 s = Student(
     id="S001",
@@ -95,3 +110,4 @@ s = Student(
     email="arav@gmail.com",
 )
 print(s.id, s.name, s.age, s.course, s.marks, s.email)
+print(s.grade)
