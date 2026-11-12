@@ -109,5 +109,27 @@ s = Student(
     marks=88,
     email="arav@gmail.com",
 )
-print(s.id, s.name, s.age, s.course, s.marks, s.email)
-print(s.grade)
+# print(s.id, s.name, s.age, s.course, s.marks, s.email)
+# print(s.grade)
+
+
+"""
+Step 6. MODEL_DUMP()
+turn a model back into python dictionay (so that we can save it later)
+"""
+
+data = s.model_dump()
+# print(data)
+
+import json
+
+"""
+Step 7. Chcek our real data (students.json)
+Every in our will go through the student model
+"""
+with open("students.json", "r") as file:
+    raw = json.load(file)
+
+for student_id, info in raw.items():
+    s = Student(id=student_id, **info)
+    print(s.id, s.name, s.grade, s.email)
